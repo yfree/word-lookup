@@ -34,7 +34,7 @@ def word_lookup(word):
         for suggestion in suggestions:
             print suggestion.text
     else:
-        print 'No results found.'
+        print 'No results found for "' + word + '".'
 
 def main():
     args = parse_args()
