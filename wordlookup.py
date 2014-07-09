@@ -34,7 +34,7 @@ def word_lookup(word):
                 try:
                     filtered_definition = definition.text.replace(':','')
                 except AttributeError:
-                    print "Unfiltered attribute tag found in definition field:"
+                    print "Unfiltered formatting tag found in definition field:"
                     undef_tags = definition.getchildren()
                     for undef_tag in undef_tags:
                         print undef_tag.tag + ' '
