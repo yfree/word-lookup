@@ -18,7 +18,8 @@ def word_lookup(word):
     doc = etree.parse(request_url)
     # these tags are meant to manipulate the text output and should be stripped while retaining their contents
     etree.strip_tags(doc,'note', 'sup', 'inf', 'it', 'sc', 'rom', 'bold', 'bit',
-                                'isc', 'd_link', 'i_link', 'dx_ety', 'dx_def','un','ca','dx')
+                                'isc', 'd_link', 'i_link', 'dx_ety', 'dx_def','un',
+                                'ca','dx', 'sx')
     suggestions = doc.xpath('//entry_list/suggestion')
     entries = doc.xpath('//entry_list/entry')
     
@@ -30,9 +31,9 @@ def word_lookup(word):
         for entry in entries:
             print '========================='
             print entry.find('ew').text
-            for definition in entry.xpath('def/dt | def/dt/sx'):
+            for definition in entry.xpath('def/dt'):
                 try:
-                    filtered_definition = definition.text.replace(':','')
+                    filtered_definition = definition.text.replace(':','', 1)
                 except AttributeError:
                     print "Unfiltered formatting tag found in definition field:"
                     undef_tags = definition.getchildren()
