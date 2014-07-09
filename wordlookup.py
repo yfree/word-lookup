@@ -20,17 +20,14 @@ def word_lookup(word):
     except etree.XMLSyntaxError:
         print 'Invalid XML response when looking up "' + word + '".'
         return
-    # these tags are meant to manipulate the text output and should be stripped while retaining their contents
-    etree.strip_tags(doc,'note', 'sup', 'inf', 'it', 'sc', 'rom', 'bold', 'bit',
-                                'isc', 'd_link', 'i_link', 'dx_ety', 'dx_def','un',
-                                'ca','dx', 'sx')
     entries = doc.xpath('//entry_list/entry')
     suggestions = doc.xpath('//entry_list/suggestion')
     if entries:
         for entry in entries:
             print '========================='
             print entry.find('ew').text
-            for definition in entry.xpath('def/dt'): 
+            for definition in entry.xpath('def/dt'):
+                etree.strip_tags(definition,"*")
                 print '=> ' + definition.text.replace(':','', 1)
     elif suggestions:
         print 'The word "' + word + '" isn\'t in the dictionary.\nSuggestions:'
