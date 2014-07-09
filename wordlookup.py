@@ -15,14 +15,17 @@ def parse_args():
 def word_lookup(word):
     key = '?key=' + api_key
     request_url = api_url + word + key
-    doc = etree.parse(request_url)
+    try:
+        doc = etree.parse(request_url)
+    except etree.XMLSyntaxError:
+        print 'Invalid XML response.'
+        exit(1)
     # these tags are meant to manipulate the text output and should be stripped while retaining their contents
     etree.strip_tags(doc,'note', 'sup', 'inf', 'it', 'sc', 'rom', 'bold', 'bit',
                                 'isc', 'd_link', 'i_link', 'dx_ety', 'dx_def','un',
                                 'ca','dx', 'sx')
     suggestions = doc.xpath('//entry_list/suggestion')
     entries = doc.xpath('//entry_list/entry')
-    
     if suggestions:
         print 'The word "' + word + '" isn\'t in the dictionary.\nSuggestions:'
         for suggestion in suggestions:
@@ -40,9 +43,7 @@ def word_lookup(word):
                     for undef_tag in undef_tags:
                         print undef_tag.tag + ' '
                     exit(1)
-
-                if filtered_definition:
-                    print '=> ' + filtered_definition
+                print '=> ' + filtered_definition
     else:
         print 'No results found.'
 
