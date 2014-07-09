@@ -18,32 +18,24 @@ def word_lookup(word):
     try:
         doc = etree.parse(request_url)
     except etree.XMLSyntaxError:
-        print 'Invalid XML response.'
-        exit(1)
+        print 'Invalid XML response when looking up "' + word + '".'
+        return
     # these tags are meant to manipulate the text output and should be stripped while retaining their contents
     etree.strip_tags(doc,'note', 'sup', 'inf', 'it', 'sc', 'rom', 'bold', 'bit',
                                 'isc', 'd_link', 'i_link', 'dx_ety', 'dx_def','un',
                                 'ca','dx', 'sx')
-    suggestions = doc.xpath('//entry_list/suggestion')
     entries = doc.xpath('//entry_list/entry')
-    if suggestions:
-        print 'The word "' + word + '" isn\'t in the dictionary.\nSuggestions:'
-        for suggestion in suggestions:
-            print suggestion.text
-    elif entries:
+    suggestions = doc.xpath('//entry_list/suggestion')
+    if entries:
         for entry in entries:
             print '========================='
             print entry.find('ew').text
-            for definition in entry.xpath('def/dt'):
-                try:
-                    filtered_definition = definition.text.replace(':','', 1)
-                except AttributeError:
-                    print "Unfiltered formatting tag found in definition field:"
-                    undef_tags = definition.getchildren()
-                    for undef_tag in undef_tags:
-                        print undef_tag.tag + ' '
-                    exit(1)
-                print '=> ' + filtered_definition
+            for definition in entry.xpath('def/dt'): 
+                print '=> ' + definition.text.replace(':','', 1)
+    elif suggestions:
+        print 'The word "' + word + '" isn\'t in the dictionary.\nSuggestions:'
+        for suggestion in suggestions:
+            print suggestion.text
     else:
         print 'No results found.'
 
