@@ -2,7 +2,7 @@
 A command line tool for looking up quick word definitions
 
 ## Overview
-This tool uses the Merriam-Webster Dictionary API to lookup words in the Collegiate Dictionary. Output is displayed in the terminal.
+This tool uses the Merriam-Webster Dictionary API to look up words in their collegiate dictionary. Output is displayed in the terminal.
 Sign up for your free API key at [Merriam-Webster's Dictionary API](http://dictionaryapi.com/).
 
 ## Usage
