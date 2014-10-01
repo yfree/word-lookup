@@ -13,10 +13,12 @@ def parse_args():
     return arg_parser.parse_args()
 
 def word_lookup(word):
-    key = '?key=' + api_key
-    request_url = api_url + word + key
+    request_url = api_url + word + '?key=' + api_key
     try:
         doc = etree.parse(request_url)
+    except IOError:
+        print 'Failed to connect to API.'
+        return
     except etree.XMLSyntaxError:
         print 'Invalid XML response when looking up "' + word + '".'
         return
